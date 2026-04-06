@@ -22,11 +22,25 @@
     <string name="notification_permission_denied">Notifications are off. Enable them in Settings to receive mission alerts.</string>
     <string name="notification_permission_required">Allow notifications to receive mission control alerts.</string>
     <string name="notifications_disabled">Notifications are disabled for this app.</string>
+    <string name="toast_notification_posted">Alert posted. Pull down the shade to view it — many devices hide the top banner while this screen is open.</string>
 
     <!-- UI -->
     <string name="mission_title">Asteroid Monitoring Console</string>
     <string name="mission_subtitle">Trigger status, hazard, and stand-down alerts</string>
     <string name="btn_scan_complete">Run delayed scan (5s)</string>
     <string name="btn_incoming_signal">Listen for signal (3s)</string>
-    <string name="btn_random_event">Random asteroid check</string>
+    <string name="btn_random_event">Random asteroid check (2s)</string>
+
+    <!-- Task 5: status from notification tap -->
+    <string name="status_card_title">Mission status</string>
+    <string name="status_idle_summary">Awaiting tray interaction</string>
+    <string name="status_idle_detail">Open an alert from the notification shade to route context here.</string>
+    <string name="status_from_scan_title">Opened from: Scan complete</string>
+    <string name="status_from_scan_detail">Routine NEO sweep log is available for review.</string>
+    <string name="status_from_signal_title">Opened from: Incoming signal</string>
+    <string name="status_from_signal_detail">Deep-space relay telemetry is flagged for analyst review.</string>
+    <string name="status_from_hazard_title">Opened from: Hazard alert</string>
+    <string name="status_from_hazard_detail">Trajectory assessment and deflection options are prioritized.</string>
+    <string name="status_from_evaded_title">Opened from: Threat evaded</string>
+    <string name="status_from_evaded_detail">Stand-down confirmed; safety corridor is clear.</string>
 </resources>

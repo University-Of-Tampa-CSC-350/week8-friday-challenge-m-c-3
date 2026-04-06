@@ -1,9 +1,34 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.FC_006" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/mission_primary</item>
+        <item name="colorOnPrimary">@color/mission_background</item>
+        <item name="colorSurface">@color/mission_surface</item>
+        <item name="colorOnSurface">@color/mission_on_surface</item>
+        <item name="colorSurfaceContainerHighest">@color/mission_surface_variant</item>
+        <item name="android:colorBackground">@color/mission_background</item>
+        <item name="android:windowBackground">@color/mission_background</item>
+        <item name="android:navigationBarColor">@color/mission_background</item>
+        <item name="android:statusBarColor">@color/mission_background</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
 
     <style name="Theme.FC_006" parent="Base.Theme.FC_006" />
+
+    <!-- Stronger ripples + light haptics so presses read clearly on dark surfaces -->
+    <style name="Widget.FC_006.Button.Primary" parent="Widget.Material3.Button">
+        <item name="rippleColor">@color/mission_button_ripple</item>
+        <item name="android:hapticFeedbackEnabled">true</item>
+    </style>
+
+    <style name="Widget.FC_006.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="rippleColor">@color/mission_button_ripple_outlined</item>
+        <item name="strokeColor">@color/mission_primary</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="android:hapticFeedbackEnabled">true</item>
+    </style>
+
+    <style name="Widget.FC_006.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="rippleColor">@color/mission_button_ripple</item>
+        <item name="android:hapticFeedbackEnabled">true</item>
+    </style>
 </resources>

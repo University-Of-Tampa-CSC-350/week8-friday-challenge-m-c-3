@@ -1,19 +1,18 @@
 package com.example.fc_006
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
 import kotlin.random.Random
 
@@ -32,13 +31,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        // Avoid enableEdgeToEdge + manual insets here: on some API 36 emulator builds they can
+        // interact badly with system bars and leave the content area empty (black screen).
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         MissionControlNotifications.createChannels(this)
         requestNotificationPermissionIfNeeded()
@@ -57,6 +52,35 @@ class MainActivity : AppCompatActivity() {
             if (!canPostNotifications()) return@setOnClickListener
             postRandomAsteroidEvent()
         }
+
+        handleNotificationIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleNotificationIntent(intent)
+    }
+
+    private fun handleNotificationIntent(intent: Intent?) {
+        if (intent?.getBooleanExtra(EXTRA_FROM_NOTIFICATION, false) != true) return
+        val kindName = intent.getStringExtra(EXTRA_ALERT_KIND) ?: return
+        val kind = runCatching { AlertKind.valueOf(kindName) }.getOrNull() ?: return
+
+        val summaryRes = when (kind) {
+            AlertKind.SCAN_COMPLETE -> R.string.status_from_scan_title
+            AlertKind.INCOMING_SIGNAL -> R.string.status_from_signal_title
+            AlertKind.HAZARD -> R.string.status_from_hazard_title
+            AlertKind.EVADED -> R.string.status_from_evaded_title
+        }
+        val detailRes = when (kind) {
+            AlertKind.SCAN_COMPLETE -> R.string.status_from_scan_detail
+            AlertKind.INCOMING_SIGNAL -> R.string.status_from_signal_detail
+            AlertKind.HAZARD -> R.string.status_from_hazard_detail
+            AlertKind.EVADED -> R.string.status_from_evaded_detail
+        }
+        findViewById<TextView>(R.id.text_status_summary).setText(summaryRes)
+        findViewById<TextView>(R.id.text_status_detail).setText(detailRes)
     }
 
     private fun requestNotificationPermissionIfNeeded() {
@@ -100,8 +124,10 @@ class MainActivity : AppCompatActivity() {
                 MissionControlNotifications.CHANNEL_INFORMATIONAL,
                 getString(R.string.notif_scan_complete_title),
                 getString(R.string.notif_scan_complete_message),
-                R.drawable.ic_stat_informational
+                R.drawable.ic_stat_informational,
+                AlertKind.SCAN_COMPLETE
             )
+            Toast.makeText(this, R.string.toast_notification_posted, Toast.LENGTH_LONG).show()
         }, 5_000L)
     }
 
@@ -114,34 +140,46 @@ class MainActivity : AppCompatActivity() {
                 MissionControlNotifications.CHANNEL_WARNING,
                 getString(R.string.notif_signal_title),
                 getString(R.string.notif_signal_message),
-                R.drawable.ic_stat_warning
+                R.drawable.ic_stat_warning,
+                AlertKind.INCOMING_SIGNAL
             )
+            Toast.makeText(this, R.string.toast_notification_posted, Toast.LENGTH_LONG).show()
         }, 3_000L)
     }
 
-    /** Trigger 3: random outcome — hazard (warning) or evaded (resolved). */
+    /** Trigger 3: short delay + random outcome — hazard (warning) or evaded (Task 6). */
     private fun postRandomAsteroidEvent() {
-        val evaded = Random.nextBoolean()
-        if (evaded) {
-            MissionControlNotifications.show(
-                this,
-                nextNotificationId(),
-                MissionControlNotifications.CHANNEL_EVADED,
-                getString(R.string.notif_evaded_title),
-                getString(R.string.notif_evaded_message),
-                R.drawable.ic_stat_evaded
-            )
-        } else {
-            MissionControlNotifications.show(
-                this,
-                nextNotificationId(),
-                MissionControlNotifications.CHANNEL_WARNING,
-                getString(R.string.notif_hazard_title),
-                getString(R.string.notif_hazard_message),
-                R.drawable.ic_stat_warning
-            )
-        }
+        handler.postDelayed({
+            val evaded = Random.nextBoolean()
+            if (evaded) {
+                MissionControlNotifications.show(
+                    this,
+                    nextNotificationId(),
+                    MissionControlNotifications.CHANNEL_EVADED,
+                    getString(R.string.notif_evaded_title),
+                    getString(R.string.notif_evaded_message),
+                    R.drawable.ic_stat_evaded,
+                    AlertKind.EVADED
+                )
+            } else {
+                MissionControlNotifications.show(
+                    this,
+                    nextNotificationId(),
+                    MissionControlNotifications.CHANNEL_WARNING,
+                    getString(R.string.notif_hazard_title),
+                    getString(R.string.notif_hazard_message),
+                    R.drawable.ic_stat_warning,
+                    AlertKind.HAZARD
+                )
+            }
+            Toast.makeText(this, R.string.toast_notification_posted, Toast.LENGTH_LONG).show()
+        }, 2_000L)
     }
 
     private fun nextNotificationId(): Int = notificationId++
+
+    companion object {
+        const val EXTRA_FROM_NOTIFICATION = "com.example.fc_006.EXTRA_FROM_NOTIFICATION"
+        const val EXTRA_ALERT_KIND = "com.example.fc_006.EXTRA_ALERT_KIND"
+    }
 }

@@ -2,4 +2,22 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Mission control / space theme -->
+    <color name="mission_background">#FF0D1117</color>
+    <color name="mission_surface">#FF161B22</color>
+    <color name="mission_surface_variant">#FF21262D</color>
+    <color name="mission_primary">#FF58A6FF</color>
+    <color name="mission_on_surface">#FFE6EDF3</color>
+    <color name="mission_on_surface_muted">#FF8B949E</color>
+    <color name="mission_outline">#FF30363D</color>
+
+    <!-- Button press feedback (visible ripple on dark UI) -->
+    <color name="mission_button_ripple">#99FFFFFF</color>
+    <color name="mission_button_ripple_outlined">#B3FFFFFF</color>
+
+    <!-- Notification tray accent (bonus) -->
+    <color name="notification_accent_informational">#FF3FB950</color>
+    <color name="notification_accent_warning">#FFD29922</color>
+    <color name="notification_accent_evaded">#FF58A6FF</color>
 </resources>
