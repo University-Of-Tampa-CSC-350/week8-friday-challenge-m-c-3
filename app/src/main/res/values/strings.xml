@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">FC_006</string>
+
+    <!-- Notification channels (Task 1 & 4) -->
+    <string name="channel_informational_name">Mission Control — Status</string>
+    <string name="channel_informational_description">Routine scans and informational alerts</string>
+    <string name="channel_warning_name">Mission Control — Hazards</string>
+    <string name="channel_warning_description">High-priority hazard and signal warnings</string>
+    <string name="channel_evaded_name">Mission Control — Threat resolved</string>
+    <string name="channel_evaded_description">Successful evasion and stand-down notices</string>
+
+    <!-- Notification content (Task 3) -->
+    <string name="notif_scan_complete_title">Scan Complete</string>
+    <string name="notif_scan_complete_message">Near-Earth object sweep finished. Trajectory data logged for mission control review.</string>
+    <string name="notif_signal_title">Incoming Signal Detected</string>
+    <string name="notif_signal_message">Anomalous telemetry received on deep-space relay. Analysts notified.</string>
+    <string name="notif_hazard_title">Hazard Detected</string>
+    <string name="notif_hazard_message">Object on potential Earth-crossing trajectory. Assess deflection options.</string>
+    <string name="notif_evaded_title">Threat Evaded</string>
+    <string name="notif_evaded_message">Trajectory update: object will pass outside the safety corridor. Stand down from alert posture.</string>
+
+    <string name="notification_permission_denied">Notifications are off. Enable them in Settings to receive mission alerts.</string>
+    <string name="notification_permission_required">Allow notifications to receive mission control alerts.</string>
+    <string name="notifications_disabled">Notifications are disabled for this app.</string>
+
+    <!-- UI -->
+    <string name="mission_title">Asteroid Monitoring Console</string>
+    <string name="mission_subtitle">Trigger status, hazard, and stand-down alerts</string>
+    <string name="btn_scan_complete">Run delayed scan (5s)</string>
+    <string name="btn_incoming_signal">Listen for signal (3s)</string>
+    <string name="btn_random_event">Random asteroid check</string>
 </resources>
